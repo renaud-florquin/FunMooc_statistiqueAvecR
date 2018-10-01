@@ -1,0 +1,67 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(prettyR)
+```
+
+## chargement des données
+
+```{r}
+satisfaction_hopital <- read.csv2("satisfaction_hopital.csv")
+```
+
+
+## Question 1: Variables catégorielles
+
+# Service
+
+```{r}
+```
+round(prop.table(table(satisfaction_hopital$service))*100, 1)
+
+# Sexe du patient
+
+```{r}
+satisfaction_hopital$sexe.cat = factor(satisfaction_hopital$sexe, labels = c("homme", "femme"))
+round(prop.table(table(satisfaction_hopital$sexe.cat))*100, 1)
+```
+
+
+# Profession du patient
+
+```{r}
+satisfaction_hopital$profession.cat = factor(satisfaction_hopital$profession, labels = c(
+"agriculteur", 
+"artisan", 
+"cadre", 
+"fonction publique", 
+"employe", 
+"ouvrier", 
+"etudiant", 
+"autre"))
+round(prop.table(table(satisfaction_hopital$profession.cat))*100, 1)
+```
+
+# Question 2: Données synthétiques
+
+```{r}
+describe(subset(satisfaction_hopital, select=c(age, amelioration.sante, amelioration.moral, recommander, score.relation, score.information)), num.desc=c("mean","median","sd","min","max","valid.n"))
+```
+
+# Question 3: Histogramme du score de relation
+
+```{r}
+hist(satisfaction_hopital$score.relation,  xlim=c(10,45),ylim=c(0,120), main = "Etude de satisfaction", xlab="score de relation", ylab="nb de données")
+```
+
+# Question 4: Distribution du score de relation chez les hommes et les femmes
+
+
+```{r}
+boxplot(satisfaction_hopital$score.relation ~ satisfaction_hopital$sexe.cat, main="Comparaison du score.relation en fonction du sexe du patient")
+```
